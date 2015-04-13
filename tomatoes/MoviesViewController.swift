@@ -11,23 +11,32 @@ import UIKit
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var movies: [NSDictionary]! = [NSDictionary]()
-        
+    
+    var refreshControl: UIRefreshControl!
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         SVProgressHUD.show()
         
-    
+        // add a pull to refresh
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
         
-        fetchMovies()
+        refresh()
         tableView.delegate = self
         tableView.dataSource = self
+        
+        self.tableView.insertSubview(refreshControl, atIndex: 0)
         
         // Do any additional setup after loading the view.
     }
 
-    func fetchMovies() {
+    func refresh() {
+        refreshControl.beginRefreshing()
+        
         var url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=nxu96vjy2huu9g3vd3kjfd2g")!
         var request = NSURLRequest(URL: url)
         
@@ -38,7 +47,9 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             self.movies = json["movies"] as [NSDictionary]
             self.tableView.reloadData()
+            self.refreshControl.endRefreshing()
         }
+        NSLog("in refresher")
     }
     
     override func didReceiveMemoryWarning() {
