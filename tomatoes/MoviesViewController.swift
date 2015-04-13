@@ -11,11 +11,15 @@ import UIKit
 class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var movies: [NSDictionary]! = [NSDictionary]()
-    
+        
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        SVProgressHUD.show()
+        
+    
+        
         fetchMovies()
         tableView.delegate = self
         tableView.dataSource = self
@@ -29,6 +33,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data:NSData!, error: NSError!) -> Void in
             
+            SVProgressHUD.dismiss()
             var json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
             
             self.movies = json["movies"] as [NSDictionary]
