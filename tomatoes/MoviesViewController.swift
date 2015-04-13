@@ -16,6 +16,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchMovies()
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        // Do any additional setup after loading the view.
+    }
+
+    func fetchMovies() {
         var url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=nxu96vjy2huu9g3vd3kjfd2g")!
         var request = NSURLRequest(URL: url)
         
@@ -26,13 +34,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.movies = json["movies"] as [NSDictionary]
             self.tableView.reloadData()
         }
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
