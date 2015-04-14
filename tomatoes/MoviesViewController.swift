@@ -110,6 +110,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var movieDetailViewController = segue.destinationViewController as MovieDetailViewController
         var cell = sender as UITableViewCell
         var indexPath = tableView.indexPathForCell(cell)!
+
         
         movieDetailViewController.movie = movies[indexPath.row]
     }
