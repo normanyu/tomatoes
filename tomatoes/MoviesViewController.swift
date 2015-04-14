@@ -86,8 +86,14 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.synopsisLabel.text = movie["synopsis"] as? String
         
         var url = movie.valueForKeyPath("posters.thumbnail") as? String
+        
+        cell.posterView.alpha=0
         cell.posterView.setImageWithURL(NSURL(string: url!)!)
-   
+        
+        UIView.animateWithDuration(3, animations: {
+            cell.posterView.alpha = 1
+        })
+        
         return cell
     }
     

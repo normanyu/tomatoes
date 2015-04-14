@@ -40,7 +40,13 @@ class MovieDetailViewController: UIViewController {
             url = url!.stringByReplacingCharactersInRange(range, withString: "https://content6.flixster.com/")
         }
         
-        posterView.setImageWithURL(NSURL(string: url!)!)
+        self.posterView.alpha=0
+        self.posterView.setImageWithURL(NSURL(string: url!)!)
+        
+        UIView.animateWithDuration(3, animations: {
+            self.posterView.alpha = 1
+        })
+        
         
         // Do any additional setup after loading the view.
     }
