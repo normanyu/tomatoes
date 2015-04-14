@@ -14,3 +14,5 @@ Time spent: 6
 #### Optional
 - All images fade in.
 - Customize the navigation bar.
+
+![alt tag](https://github.com/normanyu/tomatoes/blob/master/demo.gif)
