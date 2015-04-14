@@ -15,6 +15,7 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var refreshControl: UIRefreshControl!
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +32,8 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         self.tableView.insertSubview(refreshControl, atIndex: 0)
         
+        
+        
         // Do any additional setup after loading the view.
     }
 
@@ -41,13 +44,25 @@ class MoviesViewController: UIViewController, UITableViewDelegate, UITableViewDa
         var request = NSURLRequest(URL: url)
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data:NSData!, error: NSError!) -> Void in
-            
             SVProgressHUD.dismiss()
-            var json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
+            if ((error) != nil) {
+                self.errorLabel.text = "Network error"
+                self.errorLabel.hidden = false
+                self.refreshControl.endRefreshing()
+                NSLog("Got network error!")
+            } else {
+                self.errorLabel.hidden = true
+                var object = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
+                self.movies = object["movies"] as [NSDictionary]
+                self.tableView.reloadData()
             
-            self.movies = json["movies"] as [NSDictionary]
-            self.tableView.reloadData()
-            self.refreshControl.endRefreshing()
+                var json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSDictionary
+            
+                self.movies = json["movies"] as [NSDictionary]
+                self.refreshControl.endRefreshing()
+                self.tableView.reloadData()
+            }
+            
         }
         NSLog("in refresher")
     }
