@@ -18,6 +18,16 @@ class MovieDetailViewController: UIViewController {
     @IBOutlet weak var posterView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Add custom nav bar
+        var nav = self.navigationController?.navigationBar
+        nav?.barStyle = UIBarStyle.Black
+        nav?.tintColor = UIColor.yellowColor()
+        
+        let titleView = UILabel(frame: CGRect(x: 80, y: 0, width: 160, height: 40))
+        titleView.text = movie["title"] as? String
+        
+        // Add movie to main view
         NSLog("%@", movie)
         titleLabel.text = movie["title"] as? String
         synopsisLabel.text = movie["synopsis"] as? String
